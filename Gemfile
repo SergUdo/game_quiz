@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+ruby '2.5.7'
 gem 'rails', '~> 4.2.6'
 
 # Удобная админка для управления любыми сущностями
@@ -33,5 +34,5 @@ group :production do
   # гем, улучшающий вывод логов на Heroku
   # https://devcenter.heroku.com/articles/getting-started-with-rails4#heroku-gems
   gem 'rails_12factor'
-  gem 'pg'
+  gem 'pg', '~> 0.15'
 end
