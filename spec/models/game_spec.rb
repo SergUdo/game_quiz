@@ -116,4 +116,25 @@ RSpec.describe Game, type: :model do
       expect(game_w_questions.previous_level).to eq(game_w_questions.current_level - 1)
     end
   end
+
+  context '.answer_current_question!' do
+    before(:each) do
+      game_w_questions.finished_at = Time.now
+      expect(game_w_questions.finished?).to eq true
+    end
+
+    it 'answer correct' do
+      game_w_questions.current_level = Question::QUESTION_LEVELS.max
+      expect(game_w_questions.current_level).to eq(14)
+    end
+
+    it 'answer finish game' do
+      game_w_questions.finished_at = Time.now
+      expect(game_w_questions.answer_current_question!(1000000)).to be_falsey
+    end
+
+    it 'answer uncorrect' do
+      expect(game_w_questions.answer_current_question!('b')).to be_falsey
+    end
+  end
 end
