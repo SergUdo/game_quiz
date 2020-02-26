@@ -110,9 +110,10 @@ RSpec.describe Game, type: :model do
       expect(game_w_questions.current_game_question).to be_truthy
     end
   end
+
   context '.previous_level' do
     it 'previous_level' do
-    expect(game_w_questions.previous_level).to eq(game_w_questions.current_level - 1)
+      expect(game_w_questions.previous_level).to eq(game_w_questions.current_level - 1)
     end
   end
 end
