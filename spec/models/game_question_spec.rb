@@ -47,8 +47,15 @@ RSpec.describe GameQuestion, type: :model do
     end
   end
 
-  it 'correct .level & .text delegates' do
-    expect(game_question.text).to eq(game_question.question.text)
-    expect(game_question.level).to eq(game_question.question.level)
+    it 'correct .level & .text delegates' do
+      expect(game_question.text).to eq(game_question.question.text)
+      expect(game_question.level).to eq(game_question.question.level)
+    end
+
+
+  context 'model game_question' do
+    it 'test method correct_answer_key' do
+    expect(game_question.correct_answer_key).to eq('b')
+    end
   end
 end
