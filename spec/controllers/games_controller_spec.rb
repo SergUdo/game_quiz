@@ -161,5 +161,13 @@ RSpec.describe GamesController, type: :controller do
       expect(response).to redirect_to(game_path(game_w_questions))
       expect(flash[:alert]).to be
     end
+
+    it 'answers incorrect' do
+      answer_in_correct = assigns(:answer_is_correct)
+
+      expect(game_w_questions.answer_current_question!('a')).to be_falsey
+      expect(flash.empty?).to be_truthy
+      expect(answer_in_correct).to be_nil
+    end
   end
 end
