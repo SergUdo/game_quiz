@@ -40,6 +40,31 @@ RSpec.describe GamesController, type: :controller do
       expect(response).to redirect_to(new_user_session_path)
       expect(flash[:alert]).to be # во flash должен быть прописана ошибка
     end
+
+    it "#show view denied game" do
+      get :show, id: game_w_questions.id
+      expect(response).to redirect_to(new_user_session_path)
+    end
+
+    it "#create denied anon user" do
+      create_game = FactoryGirl.create(:game_with_questions)
+
+      post :create, id: create_game.id
+      expect(response).not_to eq(200)
+      expect(flash[:alert]).to be
+    end
+
+    it ".take money denied anon user" do
+      create_game = FactoryGirl.create(:game_with_questions)
+
+      expect(response).not_to redirect_to(user_path(user))
+      expect(create_game.take_money!).to be_truthy
+      expect(flash[:warning]).to be_nil
+    end
+
+    it ".help denied anon user" do
+      expect(response).not_to redirect_to(user_path(user))
+    end
   end
 
   # группа тестов на экшены контроллера, доступных залогиненным юзерам
