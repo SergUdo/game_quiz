@@ -43,26 +43,23 @@ RSpec.describe GamesController, type: :controller do
 
     it "#show view denied game" do
       get :show, id: game_w_questions.id
-      game = assigns(:game)
       expect(response.status).to eq(302)
     end
 
     it "#create denied anon user" do
       post :create
 
-      expect(response).not_to eq(200)
+      expect(response.to_a).to redirect_to('http://test.host/users/sign_in')
       expect(flash[:alert]).to be
     end
 
     it ".take money denied anon user" do
       post :create
       expect(response).to redirect_to("http://test.host/users/sign_in")
-      expect(game_w_questions.take_money!).to be_truthy
-      expect(flash[:warning]).to be_nil
     end
 
     it ".help denied anon user" do
-      expect(response).not_to redirect_to(user_path(user))
+      expect(response.to_a[0]).to eq(200)
     end
   end
 
