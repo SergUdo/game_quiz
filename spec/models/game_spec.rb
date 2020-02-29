@@ -107,20 +107,21 @@ RSpec.describe Game, type: :model do
 
   context '.current_game_question' do
     it 'current level' do
-      expect(game_w_questions.current_game_question).to be_truthy
+      expect(game_w_questions.current_game_question).to eq(game_w_questions.game_questions[0])
     end
   end
 
   context '.previous_level' do
     it 'previous_level' do
-      expect(game_w_questions.previous_level).to eq(game_w_questions.current_level - 1)
+      expect(game_w_questions.previous_level).to eq(-1)
     end
   end
 
   context '.answer_current_question!' do
-    before(:each) do
+    it 'game finished' do
       game_w_questions.finished_at = Time.now
       expect(game_w_questions.finished?).to eq true
+      expect(game_w_questions.answer_current_question!('a')).to be_falsey
     end
 
     it 'answer correct' do
@@ -130,7 +131,7 @@ RSpec.describe Game, type: :model do
 
     it 'answer finish game' do
       game_w_questions.finished_at = Time.now
-      expect(game_w_questions.answer_current_question!(1000000)).to be_falsey
+      expect(game_w_questions.answer_current_question!(1000000)).to eq false
     end
 
     it 'answer uncorrect' do
