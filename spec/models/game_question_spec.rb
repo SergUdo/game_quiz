@@ -49,4 +49,10 @@ RSpec.describe GameQuestion, type: :model do
       expect(game_question.correct_answer_key).to eq('b')
     end
   end
+
+  context 'help_hash' do
+    it 'test model help' do
+      expect(game_question.help_hash).to include({})
+    end
+  end
 end
