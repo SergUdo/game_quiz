@@ -159,7 +159,7 @@ RSpec.describe GamesController, type: :controller do
 
     it 'answers incorrect' do
       answer_in_correct = assigns(:answer_is_correct)
-      put :answer, id: game_w_questions.id, letter: game_w_questions.current_game_question.answer_correct?('a')
+      put :answer, id: game_w_questions.id, letter: 'a'
       expect(game_w_questions.answer_current_question!('a')).to be_falsey
       expect(flash.empty?).to be_falsey
       expect(answer_in_correct).to be_nil
