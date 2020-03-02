@@ -121,17 +121,20 @@ RSpec.describe Game, type: :model do
     it 'game finished' do
       game_w_questions.finished_at = Time.now
       expect(game_w_questions.finished?).to eq true
-      expect(game_w_questions.answer_current_question!('a')).to be_falsey
     end
 
     it 'answer correct' do
       game_w_questions.current_level = Question::QUESTION_LEVELS.max
       expect(game_w_questions.current_level).to eq(14)
+      expect(game_w_questions.status).to eq(:in_progress)
+      game_w_questions.answer_current_question!(game_w_questions.current_game_question.correct_answer_key)
+      expect(game_w_questions.game_questions).to include(game_w_questions.game_questions[0])
     end
 
     it 'answer finish game' do
-      game_w_questions.finished_at = Time.now
-      expect(game_w_questions.answer_current_question!(1000000)).to eq false
+      prize = 1000000
+      expect(game_w_questions.prize).to be_truthy
+      expect(user.balance).to eq(0)
     end
 
     it 'answer uncorrect' do
