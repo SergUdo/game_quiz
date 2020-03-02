@@ -51,11 +51,18 @@ RSpec.describe GamesController, type: :controller do
 
       expect(response.to_a).to redirect_to('http://test.host/users/sign_in')
       expect(flash[:alert]).to be
+      expect(response.status).not_to eq(200)
     end
 
-    it ".take money denied anon user" do
+    it ".take_money denied anon user" do
       post :create
+      game = assigns(:game)
       expect(response).to redirect_to("http://test.host/users/sign_in")
+      expect(game_w_questions.prize).not_to eq(200)
+      expect(user.balance).not_to eq(200)
+      expect(response).to redirect_to(new_user_session_path)
+      expect(flash[:warning]).not_to be
+      expect(game_w_questions.take_money!).to be_truthy
     end
 
     it ".help denied anon user" do
