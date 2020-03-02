@@ -48,8 +48,7 @@ RSpec.describe GamesController, type: :controller do
 
     it "#create denied anon user" do
       post :create
-
-      expect(response.to_a).to redirect_to('http://test.host/users/sign_in')
+      expect(response).to redirect_to(new_user_session_path)
       expect(flash[:alert]).to be
       expect(response.status).not_to eq(200)
     end
@@ -57,12 +56,18 @@ RSpec.describe GamesController, type: :controller do
     it ".take_money denied anon user" do
       post :create
       game = assigns(:game)
-      expect(response).to redirect_to("http://test.host/users/sign_in")
       expect(game_w_questions.prize).not_to eq(200)
       expect(user.balance).not_to eq(200)
       expect(response).to redirect_to(new_user_session_path)
       expect(flash[:warning]).not_to be
       expect(game_w_questions.take_money!).to be_truthy
+    end
+
+    it 'answers denied anon user' do
+      put :answer, id: game_w_questions.id
+      expect(game_w_questions.current_level).to eq(0)
+      expect(response).to redirect_to(new_user_session_path)
+      expect(flash.empty?).to be_falsey
     end
 
     it ".help denied anon user" do
