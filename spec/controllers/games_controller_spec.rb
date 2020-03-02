@@ -178,8 +178,13 @@ RSpec.describe GamesController, type: :controller do
     end
 
     it 'help fifty_fifty' do
+      expect(game_w_questions.current_game_question.help_hash[:fifty_fifty]).to eq(nil)
       put :help, id: game_w_questions.id, help_type: :fifty_fifty
-      expect(game_w_questions.current_game_question.help_hash[:fifty_fifty]).to be_truthy
+      expect(game_w_questions.finished?).to be_falsey
+      expect(game_w_questions.current_game_question.help_hash[:fifty_fifty]).to be_nil
+      expect(game_w_questions.current_game_question.help_hash[:audience_help]).to be_nil
+      expect(response).to redirect_to(game_path(game_w_questions))
+      expect(game_w_questions.fifty_fifty_used).to be_falsey
     end
   end
 end
