@@ -176,5 +176,10 @@ RSpec.describe GamesController, type: :controller do
       expect(flash.empty?).to be_falsey
       expect(answer_in_correct).to be_nil
     end
+
+    it 'help fifty_fifty' do
+      put :help, id: game_w_questions.id, help_type: :fifty_fifty
+      expect(game_w_questions.current_game_question.help_hash[:fifty_fifty]).to be_truthy
+    end
   end
 end
