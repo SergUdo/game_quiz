@@ -172,7 +172,7 @@ RSpec.describe GamesController, type: :controller do
     it 'answers incorrect' do
       answer_in_correct = assigns(:answer_is_correct)
       put :answer, id: game_w_questions.id, letter: 'a'
-      expect(game_w_questions.answer_current_question!('a')).to be_falsey
+      expect(game_w_questions.answer).to be_falsey
       expect(flash.empty?).to be_falsey
       expect(answer_in_correct).to be_nil
     end
@@ -180,11 +180,12 @@ RSpec.describe GamesController, type: :controller do
     it 'help fifty_fifty' do
       expect(game_w_questions.current_game_question.help_hash[:fifty_fifty]).to eq(nil)
       put :help, id: game_w_questions.id, help_type: :fifty_fifty
-      expect(game_w_questions.finished?).to be_falsey
-      expect(game_w_questions.current_game_question.help_hash[:fifty_fifty]).to be_nil
-      expect(game_w_questions.current_game_question.help_hash[:audience_help]).to be_nil
+      game = assigns(:game)
+      expect(game.finished?).to be_falsey
+      expect(game.current_game_question.help_hash[:fifty_fifty]).to be
+      expect(game.current_game_question.help_hash[:audience_help]).to be_nil
       expect(response).to redirect_to(game_path(game_w_questions))
-      expect(game_w_questions.fifty_fifty_used).to be_falsey
+      expect(game.fifty_fifty_used).to be_truthy
     end
   end
 end
