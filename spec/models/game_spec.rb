@@ -138,8 +138,10 @@ RSpec.describe Game, type: :model do
     end
 
     it 'answer uncorrect' do
-      expect(game_w_questions.answer_current_question!('b')).to be_falsey
+      expect(game_w_questions.answer_current_question!('b')).to eq false
       expect(game_w_questions.status).not_to eq(:in_progress)
+      expect(game_w_questions.finished?).to eq true
+      expect(game_w_questions.status).to eq(:fail)
     end
   end
 end
