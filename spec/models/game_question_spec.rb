@@ -68,4 +68,14 @@ RSpec.describe GameQuestion, type: :model do
       expect(ff.size).to eq 2
     end
   end
+
+  context 'add_friend_call' do
+    it 'test add_friend_call' do
+      expect(game_question.add_friend_call).to be_truthy
+      expect(game_question.variants.keys).to include("a", "b", "c", "d")
+      expect(game_question.help_hash[:friend_call]).to be
+      game_question.help_hash[:audience_help] = GameHelpGenerator.audience_distribution([1..45], "b")
+      expect(game_question.add_friend_call).to be_truthy
+    end
+  end
 end
