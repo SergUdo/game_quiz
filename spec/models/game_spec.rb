@@ -139,6 +139,7 @@ RSpec.describe Game, type: :model do
 
     it 'answer uncorrect' do
       expect(game_w_questions.answer_current_question!('b')).to be_falsey
+      expect(game_w_questions.status).not_to eq(:in_progress)
     end
   end
 end
