@@ -7,9 +7,8 @@ RSpec.describe 'users/show', type: :view do
 
   it 'renders player names' do
     assign(:users, (users_url))
-    #binding.irb
-    stub_template "users/show.html.erb" => "<h1><%= @user.name %></h1>"
-    #expect(rendered).to match 'First'
+    stub_template "users/show.html.erb" => "SSS"
+    expect(rendered).to match ''
   end
 
   it 'renders button password' do
