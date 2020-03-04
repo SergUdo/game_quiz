@@ -73,6 +73,12 @@ RSpec.describe GamesController, type: :controller do
     it ".help denied anon user" do
       expect(response.to_a[0]).to eq(200)
     end
+
+    it "test game" do
+      get :show, id: game_w_questions.id
+      game = assigns(:game)
+      expect(game).to be_nil
+    end
   end
 
   # группа тестов на экшены контроллера, доступных залогиненным юзерам
@@ -171,10 +177,13 @@ RSpec.describe GamesController, type: :controller do
 
     it 'answers incorrect' do
       answer_in_correct = assigns(:answer_is_correct)
-      put :answer, id: game_w_questions.id, letter: 'a'
-      expect(game_w_questions.answer).to be_falsey
+      put :answer, id: game_w_questions.id
+      game = assigns(:game)
+      expect(game.answer_current_question!('d')).to be_falsey
+      expect(game.game_questions[0]).to eq(game_w_questions.game_questions[0])
       expect(flash.empty?).to be_falsey
       expect(answer_in_correct).to be_nil
+      expect(response).to redirect_to(user_path(user))
     end
 
     it 'help fifty_fifty' do
