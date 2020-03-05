@@ -48,9 +48,12 @@ RSpec.describe GamesController, type: :controller do
 
     it "#create denied anon user" do
       post :create
+      game = assigns(:game)
+      expect(game).to be nil
       expect(response).to redirect_to(new_user_session_path)
       expect(flash[:alert]).to be
-      expect(response.status).not_to eq(200)
+      expect(response.status).to eq(302)
+
     end
 
     it ".take_money denied anon user" do

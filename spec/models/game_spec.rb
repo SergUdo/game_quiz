@@ -129,6 +129,7 @@ RSpec.describe Game, type: :model do
       expect(game_w_questions.status).to eq(:in_progress)
       game_w_questions.answer_current_question!(game_w_questions.current_game_question.correct_answer_key)
       expect(game_w_questions.game_questions).to include(game_w_questions.game_questions[0])
+      expect(game_w_questions.status).to eq(:won)
     end
 
     it 'answer finish game' do
