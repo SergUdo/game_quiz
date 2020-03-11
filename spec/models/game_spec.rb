@@ -117,32 +117,65 @@ RSpec.describe Game, type: :model do
     end
   end
 
-  context '.answer_current_question!' do
-    it 'game finished' do
-      game_w_questions.finished_at = Time.now
-      expect(game_w_questions.finished?).to eq true
+  describe '#answer_current_question!' do
+    let(:answer) { game_w_questions.current_game_question.correct_answer_key }
+
+    before do
+      game_w_questions.answer_current_question!(answer)
     end
 
-    it 'answer correct' do
-      game_w_questions.current_level = Question::QUESTION_LEVELS.max
-      expect(game_w_questions.current_level).to eq(14)
-      expect(game_w_questions.status).to eq(:in_progress)
-      game_w_questions.answer_current_question!(game_w_questions.current_game_question.correct_answer_key)
-      expect(game_w_questions.game_questions).to include(game_w_questions.game_questions[0])
-      expect(game_w_questions.status).to eq(:won)
+    context 'when answer is correct' do
+      context 'when question is last' do
+        let(:game_w_questions) { FactoryGirl.create(:game_with_questions, user: user, current_level: 14) }
+
+        it "game is finished" do
+          expect(game_w_questions).to be_finished
+        end
+
+        it "game status is won" do
+          expect(game_w_questions.status).to eq :won
+        end
+
+        it "game has maximal prize" do
+          expect(game_w_questions.prize).to eq 1_000_000
+        end
+      end
+
+      context 'when question is not last' do
+        it "game is not finished" do
+          expect(game_w_questions).not_to be_finished
+        end
+
+        it "game status is in progress" do
+          expect(game_w_questions.status).to eq :in_progress
+        end
+      end
     end
 
-    it 'answer finish game' do
-      prize = 1000000
-      expect(game_w_questions.prize).to be_truthy
-      expect(user.balance).to eq(0)
+    context 'when answer is incorrect' do
+      let(:answer) do
+        (%w[a b c d] - [super()]).sample
+      end
+
+      it "game status is fail" do
+        expect(game_w_questions.status).to eq :fail
+      end
+
+      it "game is finished" do
+        expect(game_w_questions).to be_finished
+      end
     end
 
-    it 'answer uncorrect' do
-      expect(game_w_questions.answer_current_question!('b')).to eq false
-      expect(game_w_questions.status).not_to eq(:in_progress)
-      expect(game_w_questions.finished?).to eq true
-      expect(game_w_questions.status).to eq(:fail)
+    context 'when time is over' do
+      let(:game_w_questions) { FactoryGirl.create(:game_with_questions, user: user, created_at: 1.hour.ago) }
+
+      it "game status is timeout" do
+        expect(game_w_questions.status).to eq :timeout
+      end
+
+      it "game is finished" do
+        expect(game_w_questions).to be_finished
+      end
     end
   end
 end
