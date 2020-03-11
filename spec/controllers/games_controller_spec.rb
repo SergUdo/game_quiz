@@ -173,14 +173,17 @@ RSpec.describe GamesController, type: :controller do
       expect(flash[:alert]).to be
     end
 
-    it 'answers incorrect' do
-      answer_in_correct = assigns(:answer_is_correct)
-      put :answer, id: game_w_questions.id
+    it 'answer is wrong' do
+      right_answer = game_w_questions.current_game_question.correct_answer_key
+      wrong_answer = (%w[a b c d] - [right_answer]).sample
+
+      put :answer, id: game_w_questions.id, letter: wrong_answer
+
       game = assigns(:game)
-      expect(game.answer_current_question!('d')).to be_falsey
-      expect(game.game_questions[0]).to eq(game_w_questions.game_questions[0])
-      expect(flash.empty?).to be_falsey
-      expect(answer_in_correct).to be_nil
+
+      expect(game.status).to eq :fail
+      expect(game).to be_finished
+      expect(flash[:alert]).to be
       expect(response).to redirect_to(user_path(user))
     end
 
