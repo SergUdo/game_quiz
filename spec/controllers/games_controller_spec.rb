@@ -46,41 +46,36 @@ RSpec.describe GamesController, type: :controller do
       expect(response.status).to eq(302)
     end
 
-    it "#create denied anon user" do
+    it 'kick from #create' do
       post :create
-      game = assigns(:game)
-      expect(game).to be nil
+
+      expect(response.status).not_to eq(200)
       expect(response).to redirect_to(new_user_session_path)
       expect(flash[:alert]).to be
+    end
+
+    it 'kick from #answer' do
+      put :answer, id: game_w_questions.id, letter: "a"
+
       expect(response.status).to eq(302)
-
-    end
-
-    it ".take_money denied anon user" do
-      post :create
-      game = assigns(:game)
-      expect(game_w_questions.prize).not_to eq(200)
-      expect(user.balance).not_to eq(200)
       expect(response).to redirect_to(new_user_session_path)
-      expect(flash[:warning]).not_to be
-      expect(game_w_questions.take_money!).to be_truthy
+      expect(flash[:alert]).to be
     end
 
-    it 'answers denied anon user' do
-      put :answer, id: game_w_questions.id
-      expect(game_w_questions.current_level).to eq(0)
+    it 'kick from #take_money' do
+      put :take_money, id: game_w_questions.id
+
+      expect(response.status).to eq(302)
       expect(response).to redirect_to(new_user_session_path)
-      expect(flash.empty?).to be_falsey
+      expect(flash[:alert]).to be
     end
 
-    it ".help denied anon user" do
-      expect(response.to_a[0]).to eq(200)
-    end
+    it 'kick from #help' do
+      put :help, id: game_w_questions.id, help_type: :fifty_fifty
 
-    it "test game" do
-      get :show, id: game_w_questions.id
-      game = assigns(:game)
-      expect(game).to be_nil
+      expect(response.status).to eq(302)
+      expect(response).to redirect_to(new_user_session_path)
+      expect(flash[:alert]).to be
     end
   end
 
