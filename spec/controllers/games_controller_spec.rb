@@ -41,10 +41,6 @@ RSpec.describe GamesController, type: :controller do
       expect(flash[:alert]).to be # во flash должен быть прописана ошибка
     end
 
-    it "#show view denied game" do
-      get :show, id: game_w_questions.id
-      expect(response.status).to eq(302)
-    end
 
     it 'kick from #create' do
       post :create

@@ -3,9 +3,8 @@ require 'rails_helper'
  RSpec.describe 'users/show', type: :view do
 
   describe 'user show his view' do
-    let(:users) { FactoryGirl.build_stubbed(:user, name: 'Вадик') }
+    let(:user) { FactoryGirl.build_stubbed(:user, game: '1', name: 'qqq') }
     before(:each) do
-
 
      render
     end
@@ -15,7 +14,7 @@ require 'rails_helper'
 
 
      it 'renders player names' do
-       expect(rendered).to match ('Вадик')
+       expect(rendered).to have_content('Вадик')
      end
 #   #end
 
