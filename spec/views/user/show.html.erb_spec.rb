@@ -1,16 +1,22 @@
 require 'rails_helper'
 
-# RSpec.describe 'users/show', type: :view do
+ RSpec.describe 'users/show', type: :view do
 
-#   before(:each) do
-#     assign(:users, FactoryGirl.build_stubbed(:user, name: 'PPP'))
+  describe 'user show his view' do
+    let(:users) { FactoryGirl.build_stubbed(:user, name: 'Вадик') }
+    before(:each) do
 
-#     render
-#   end
 
-#     it 'renders player names' do
-#       expect(rendered).to match 'PPP'
-#     end
+     render
+    end
+
+    #  stub_template 'users/show.html.erb' => 'Сменить имя и пароль'
+    #  expect(rendered).to have_content 'Сменить имя и пароль'
+
+
+     it 'renders player names' do
+       expect(rendered).to match ('Вадик')
+     end
 #   #end
 
 #   # context 'user show his view' do
@@ -18,6 +24,5 @@ require 'rails_helper'
 #   #     assign(:users, (users_url))
 #   #     stub_template "users/show.html.erb" => "SSS"
 #   #     expect(rendered).to match 'SSS'
-#   #   end
-#   # end
-#end
+  end
+end
