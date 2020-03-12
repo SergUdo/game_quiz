@@ -154,7 +154,7 @@ RSpec.describe Game, type: :model do
 
     context 'when answer is incorrect' do
       let(:answer) do
-        (%w[a b c d] - [super()]).sample
+        (%w[a b c d] - [super]).sample
       end
 
       it "game status is fail" do
