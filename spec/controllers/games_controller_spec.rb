@@ -29,19 +29,6 @@ RSpec.describe GamesController, type: :controller do
       expect(flash[:alert]).to be # во flash должен быть прописана ошибка
     end
 
-    it '#show alien game' do
-      # создаем новую игру, юзер не прописан, будет создан фабрикой новый
-      alien_game = FactoryGirl.create(:game_with_questions)
-
-      # пробуем зайти на эту игру текущий залогиненным user
-      get :show, id: alien_game.id
-
-      expect(response.status).not_to eq(200) # статус не 200 ОК
-      expect(response).to redirect_to(new_user_session_path)
-      expect(flash[:alert]).to be # во flash должен быть прописана ошибка
-    end
-
-
     it 'kick from #create' do
       post :create
 
