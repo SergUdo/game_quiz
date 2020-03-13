@@ -41,7 +41,6 @@ RSpec.describe Game, type: :model do
 
   # тесты на основную игровую логику
   context 'game mechanics' do
-
     # правильный ответ должен продолжать игру
     it 'answer correct continues game' do
       # текущий уровень игры и статус
@@ -120,9 +119,7 @@ RSpec.describe Game, type: :model do
   describe '#answer_current_question!' do
     let(:answer) { game_w_questions.current_game_question.correct_answer_key }
 
-    before do
-      game_w_questions.answer_current_question!(answer)
-    end
+    before { game_w_questions.answer_current_question! answer }
 
     context 'when answer is correct' do
       context 'when question is last' do
