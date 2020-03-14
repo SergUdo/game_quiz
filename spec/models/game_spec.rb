@@ -31,7 +31,7 @@ RSpec.describe Game, type: :model do
       )
       # проверяем статус и поля
       expect(game.user).to eq(user)
-      expect(game.status).to eq(:in_progress)
+      expect(game.status).to eq :in_progress
       # проверяем корректность массива игровых вопросов
       expect(game.game_questions.size).to eq(15)
       expect(game.game_questions.map(&:level)).to eq (0..14).to_a
@@ -46,7 +46,7 @@ RSpec.describe Game, type: :model do
       # текущий уровень игры и статус
       level = game_w_questions.current_level
       q = game_w_questions.current_game_question
-      expect(game_w_questions.status).to eq(:in_progress)
+      expect(game_w_questions.status).to eq :in_progress
 
       game_w_questions.answer_current_question!(q.correct_answer_key)
 
@@ -56,7 +56,7 @@ RSpec.describe Game, type: :model do
       expect(game_w_questions.previous_game_question).to eq(q)
       expect(game_w_questions.current_game_question).not_to eq(q)
       # игра продолжается
-      expect(game_w_questions.status).to eq(:in_progress)
+      expect(game_w_questions.status).to eq :in_progress
       expect(game_w_questions.finished?).to be_falsey
     end
   end
@@ -85,22 +85,22 @@ RSpec.describe Game, type: :model do
 
     it ':won' do
       game_w_questions.current_level = Question::QUESTION_LEVELS.max + 1
-      expect(game_w_questions.status).to eq(:won)
+      expect(game_w_questions.status).to eq :won
     end
 
     it ':fail' do
       game_w_questions.is_failed = true
-      expect(game_w_questions.status).to eq(:fail)
+      expect(game_w_questions.status).to eq :fail
     end
 
     it ':timeout' do
       game_w_questions.created_at = 1.hour.ago
       game_w_questions.is_failed = true
-      expect(game_w_questions.status).to eq(:timeout)
+      expect(game_w_questions.status).to eq :timeout
     end
 
     it ':money' do
-      expect(game_w_questions.status).to eq(:money)
+      expect(game_w_questions.status).to eq :money
     end
   end
 
