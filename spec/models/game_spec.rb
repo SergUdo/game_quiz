@@ -47,9 +47,7 @@ RSpec.describe Game, type: :model do
       level = game_w_questions.current_level
       q = game_w_questions.current_game_question
       expect(game_w_questions.status).to eq :in_progress
-
       game_w_questions.answer_current_question!(q.correct_answer_key)
-
       # перешли на след. уровень
       expect(game_w_questions.current_level).to eq(level + 1)
       # ранее текущий вопрос стал предыдущим
@@ -62,12 +60,10 @@ RSpec.describe Game, type: :model do
   end
 
   context 'take money' do
-
     it 'conditions take_money user' do
       b = game_w_questions.current_game_question
       game_w_questions.answer_current_question!(b.correct_answer_key)
       game_w_questions.take_money!
-
       prize = game_w_questions.prize
       expect(prize).to be > 0
       expect(game_w_questions.status).to eq :money
@@ -119,7 +115,7 @@ RSpec.describe Game, type: :model do
   describe '#answer_current_question!' do
     let(:answer) { game_w_questions.current_game_question.correct_answer_key }
 
-    before { game_w_questions.answer_current_question! answer }
+    before { game_w_questions.answer_current_question!(answer) }
 
     context 'when answer is correct' do
       context 'when question is last' do
@@ -150,7 +146,7 @@ RSpec.describe Game, type: :model do
     end
 
     context 'when answer is incorrect' do
-      let(:answer) { (%w[a b c d] - [super()]).sample }
+      let(:answer) { (%w[a b c d] - ['d']).sample }
 
       it "game status is fail" do
         expect(game_w_questions.status).to eq :fail
