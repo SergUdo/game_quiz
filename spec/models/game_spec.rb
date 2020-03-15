@@ -19,7 +19,6 @@ RSpec.describe Game, type: :model do
       # генерим 60 вопросов с 4х запасом по полю level,
       # чтобы проверить работу RANDOM при создании игры
       generate_questions(60)
-
       game = nil
       # создaли игру, обернули в блок, на который накладываем проверки
       expect {
@@ -37,7 +36,6 @@ RSpec.describe Game, type: :model do
       expect(game.game_questions.map(&:level)).to eq (0..14).to_a
     end
   end
-
 
   # тесты на основную игровую логику
   context 'game mechanics' do
@@ -114,7 +112,6 @@ RSpec.describe Game, type: :model do
 
   describe '#answer_current_question!' do
     let(:answer) { game_w_questions.current_game_question.correct_answer_key }
-
     before { game_w_questions.answer_current_question!(answer) }
 
     context 'when answer is correct' do
@@ -146,10 +143,15 @@ RSpec.describe Game, type: :model do
     end
 
     context 'when answer is incorrect' do
-      let(:answer) { (%w[a b c d] - ['d']).sample }
+      let(:correct_answer) { }
+        before { game_w_questions.answer_current_question!(correct_answer) }
+
+      let(:wrong_answer) { }
+       before { game_w_questions.answer_current_question!(wrong_answer) }
 
       it "game status is fail" do
         expect(game_w_questions.status).to eq :fail
+        expect(game_w_questions.answer_current_question!(wrong_answer)).to be(false)
       end
 
       it "game is finished" do
