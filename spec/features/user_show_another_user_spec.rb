@@ -5,13 +5,11 @@ require 'rails_helper'
 
    let(:user) { FactoryGirl.create :user }
 
-   let!(:game_another_user) { FactoryGirl.create :game }
-
+   let!(:game_another_user) { FactoryGirl.create(:game) }
 
   scenario 'successfully' do
-     visit '/users/1'
-
-     expect(page).to have_current_path '/users/1'
+     visit user_path(1)
+     expect(page).to have_current_path user_path(1)
      expect(page).to have_content('Жора')
      expect(page).to have_content('1')
      expect(page).to have_content('Выигрыш')
