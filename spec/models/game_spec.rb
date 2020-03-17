@@ -143,11 +143,8 @@ RSpec.describe Game, type: :model do
     end
 
     context 'when answer is incorrect' do
-      let(:correct_answer) { }
-        before { game_w_questions.answer_current_question!(correct_answer) }
-
-      let(:wrong_answer) { }
-       before { game_w_questions.answer_current_question!(wrong_answer) }
+       let(:wrong_answer) { (%w[a b c d] - [game_w_questions.current_game_question.correct_answer_key]).sample }
+        before { game_w_questions.answer_current_question!(wrong_answer) }
 
       it "game status is fail" do
         expect(game_w_questions.status).to eq :fail
