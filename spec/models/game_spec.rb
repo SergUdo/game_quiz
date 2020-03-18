@@ -146,14 +146,14 @@ RSpec.describe Game, type: :model do
   describe 'method' do
     context 'when answer is correct' do
       let(:correct_answer)  { game_w_questions.current_game_question.correct_answer_key }
-      before { game_w_questions.answer_current_question!(:correct_answer) }
+      before { game_w_questions.answer_current_question!(correct_answer) }
       it 'when status is correct' do
-        expect(game_w_questions.status).to eq :fail
-        expect(game_w_questions.answer_current_question!(correct_answer)).to be(false)
+        expect(game_w_questions.status).to eq :in_progress
+        expect(game_w_questions.answer_current_question!(correct_answer)).to be
       end
 
       it "game is finished" do
-        expect(game_w_questions).to be_finished
+        expect(game_w_questions).to_not be_finished
       end
     end
     context 'when answer is incorrect' do

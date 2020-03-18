@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe 'users/show', type: :view do
   before(:each) do
-    FactoryGirl.build_stubbed(:user, email: 'aaa@mail.com', name: 'sss')
+    assign(:games, FactoryGirl.build_stubbed(:game))
     render
   end
 
