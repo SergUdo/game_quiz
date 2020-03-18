@@ -8,7 +8,7 @@ RSpec.feature 'USER show another user game', type: :feature do
   let!(:game_another_user) { FactoryGirl.create(:game) }
 
   before(:each) do
-   login_as user
+    login_as user
   end
 
 scenario 'successfully' do
