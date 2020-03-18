@@ -11,14 +11,15 @@ RSpec.feature 'USER show another user game', type: :feature do
 
   scenario 'successfully' do
     visit user_path(1)
-    click_on('Billionaire')
-    click_on('Новая игра')
+    click_on('Жора')
     expect(page).to have_content('Жора')
-    expect(page).to have_content('1')
+    expect(page).to have_content('Выйти')
     expect(page).to have_content('Хороший программист')
     expect(page).to have_content('Новая игра')
     expect(page).to have_content('Выигрыш')
-    expect(page).to have_content('За игру')
-    expect(page).to have_content('Место')
-   end
+    expect(page).to have_content('Сменить имя и пароль')
+    expect(page).to have_content('Подсказки')
+    expect(page).to have_content('Вопрос')
+    expect(page).to have_content('Дата')
+  end
 end
