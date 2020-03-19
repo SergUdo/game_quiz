@@ -144,7 +144,6 @@ RSpec.describe Game, type: :model do
 
     context 'when answer is correct' do
       let(:correct_answer)  { game_w_questions.current_game_question.correct_answer_key }
-      before { game_w_questions.answer_current_question!(correct_answer) }
       it 'when status is correct' do
         expect(game_w_questions.status).to eq :in_progress
         expect(game_w_questions.answer_current_question!(correct_answer)).to be
