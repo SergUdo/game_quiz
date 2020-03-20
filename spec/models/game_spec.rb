@@ -110,44 +110,44 @@ RSpec.describe Game, type: :model do
     end
   end
 
-  describe '#answer_current_question!' do
+  context '#answer_current_question!' do
     let(:answer) { game_w_questions.current_game_question.correct_answer_key }
     before { game_w_questions.answer_current_question!(answer) }
 
-    context 'when answer is correct' do
-      context 'when question is last' do
-        let(:game_w_questions) { FactoryGirl.create(:game_with_questions, user: user, current_level: 14) }
+    context 'when question is last' do
+      let(:game_w_questions) { FactoryGirl.create(:game_with_questions, user: user, current_level: 14) }
 
-        it "game is finished" do
-          expect(game_w_questions).to be_finished
-        end
-
-        it "game status is won" do
-          expect(game_w_questions.status).to eq :won
-        end
-
-        it "game has maximal prize" do
-          expect(game_w_questions.prize).to eq 1_000_000
-        end
+      it "game is finished" do
+        expect(game_w_questions).to be_finished
       end
 
-      context 'when question is not last' do
-        it "game is not finished" do
-          expect(game_w_questions).not_to be_finished
-        end
+      it "game status is won" do
+        expect(game_w_questions.status).to eq :won
+      end
 
-        it "game status is in progress" do
-          expect(game_w_questions.status).to eq :in_progress
-        end
+      it "game has maximal prize" do
+        expect(game_w_questions.prize).to eq 1_000_000
+      end
+    end
+
+    context 'when question is not last' do
+      it "game is not finished" do
+        expect(game_w_questions).not_to be_finished
+      end
+
+      it "game status is in progress" do
+        expect(game_w_questions.status).to eq :in_progress
       end
     end
 
     context 'when answer is correct' do
       let(:correct_answer)  { game_w_questions.current_game_question.correct_answer_key }
-      it 'when status is correct' do
+
+      it 'answer is correct' do
         expect(game_w_questions.status).to eq :in_progress
-        expect(game_w_questions.answer_current_question!(correct_answer)).to be
-        expect(game_w_questions).to_not be_finished
+        expect(game_w_questions.answer_current_question!(correct_answer)).to be true
+        expect(game_w_questions.finished?).to be false
+        expect(game_w_questions.current_level).to eq 2
       end
     end
 
@@ -155,10 +155,10 @@ RSpec.describe Game, type: :model do
       let(:wrong_answer) { %w[a b c d].delete_if { |i| i == game_w_questions.current_game_question.correct_answer_key}.sample }
       before { game_w_questions.answer_current_question!(wrong_answer) }
 
-      it "game status is fail" do
+      it "answer is wrong" do
         expect(game_w_questions.status).to eq :fail
-        expect(game_w_questions.answer_current_question!(wrong_answer)).to be(false)
-        expect(game_w_questions).to be_finished
+        expect(game_w_questions.answer_current_question!(wrong_answer)).to be false
+        expect(game_w_questions.finished?).to be true
       end
     end
 
