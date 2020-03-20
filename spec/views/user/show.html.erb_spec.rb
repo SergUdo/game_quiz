@@ -10,11 +10,11 @@ RSpec.describe 'users/show', type: :view do
     end
 
     it 'renders player name' do
-      expect(rendered).to match 'Vadik'
+      expect(rendered).to have_content 'Vadik'
     end
 
     it 'watch change name and password' do
-      expect(rendered).not_to match 'Сменить имя и пароль'
+      expect(rendered).to_not have_content 'Сменить имя и пароль'
     end
   end
 
