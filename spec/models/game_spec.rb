@@ -146,7 +146,7 @@ RSpec.describe Game, type: :model do
       it 'answer is correct' do
         expect(game_w_questions.status).to eq :in_progress
         expect(game_w_questions.answer_current_question!(correct_answer)).to be true
-        expect(game_w_questions.finished?).to be false
+        expect(game_w_questions.finished?).to be (false)
         expect(game_w_questions.current_level).to eq 2
       end
     end
@@ -157,8 +157,8 @@ RSpec.describe Game, type: :model do
 
       it "answer is wrong" do
         expect(game_w_questions.status).to eq :fail
-        expect(game_w_questions.answer_current_question!(wrong_answer)).to be false
-        expect(game_w_questions.finished?).to be true
+        expect(game_w_questions.answer_current_question!(wrong_answer)).to be (false)
+        expect(game_w_questions.finished?).to be (true)
       end
     end
 
