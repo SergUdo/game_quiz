@@ -110,67 +110,44 @@ RSpec.describe Game, type: :model do
     end
   end
 
-  context '#answer_current_question!' do
-    let(:answer) { game_w_questions.current_game_question.correct_answer_key }
-    before { game_w_questions.answer_current_question!(answer) }
+  describe '#answer_current_question!' do
+    let(:correct_answer) { game_w_questions.current_game_question.correct_answer_key }
+    before { game_w_questions.answer_current_question!(correct_answer) }
 
-    context 'when question is last' do
-      let(:game_w_questions) { FactoryGirl.create(:game_with_questions, user: user, current_level: 14) }
+    context 'wheh question is last' do
+      let(:game_w_questions) { FactoryGirl.create(:game_with_questions, user: user, current_level: Question::QUESTION_LEVELS.max) }
 
-      it "game is finished" do
+      it 'works correctly' do
         expect(game_w_questions).to be_finished
-      end
-
-      it "game status is won" do
         expect(game_w_questions.status).to eq :won
-      end
-
-      it "game has maximal prize" do
-        expect(game_w_questions.prize).to eq 1_000_000
+        expect(game_w_questions.prize).to eq Game::PRIZES.last
       end
     end
 
     context 'when question is not last' do
-      it "game is not finished" do
+      it 'works correctly' do
         expect(game_w_questions).not_to be_finished
-      end
-
-      it "game status is in progress" do
         expect(game_w_questions.status).to eq :in_progress
-      end
-    end
-
-    context 'when answer is correct' do
-      let(:correct_answer)  { game_w_questions.current_game_question.correct_answer_key }
-
-      it 'answer is correct' do
-        expect(game_w_questions.status).to eq :in_progress
-        expect(game_w_questions.answer_current_question!(correct_answer)).to be true
-        expect(game_w_questions.finished?).to be (false)
-        expect(game_w_questions.current_level).to eq 2
-      end
-    end
-
-    context 'when answer is incorrect' do
-      let(:wrong_answer) { %w[a b c d].delete_if { |i| i == game_w_questions.current_game_question.correct_answer_key}.sample }
-      before { game_w_questions.answer_current_question!(wrong_answer) }
-
-      it "answer is wrong" do
-        expect(game_w_questions.status).to eq :fail
-        expect(game_w_questions.answer_current_question!(wrong_answer)).to be (false)
-        expect(game_w_questions.finished?).to be (true)
-      end
+        expect(game_w_questions.current_level).to eq 1
     end
 
     context 'when time is over' do
       let(:game_w_questions) { FactoryGirl.create(:game_with_questions, user: user, created_at: 1.hour.ago) }
 
-      it "game status is timeout" do
+      it 'works correctly' do
         expect(game_w_questions.status).to eq :timeout
-      end
-
-      it "game is finished" do
         expect(game_w_questions).to be_finished
+      end
+    end
+  end
+
+    context 'when answer is incorrect' do
+      let(:wrong_answer) { %w[a b c d].reject { |i| i == game_w_questions.current_game_question.correct_answer_key}.sample }
+      before { game_w_questions.answer_current_question!(wrong_answer) }
+
+      it 'works correctly' do
+        expect(game_w_questions.status).to eq :fail
+        expect(game_w_questions.finished?).to be true
       end
     end
   end
