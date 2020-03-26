@@ -124,13 +124,11 @@ RSpec.describe Game, type: :model do
       end
     end
 
-    context 'when question is not last' do
       it 'works correctly' do
         expect(game_w_questions).not_to be_finished
         expect(game_w_questions.status).to eq :in_progress
         expect(game_w_questions.current_level).to eq 1
       end
-    end
 
     context 'when time is over' do
       let(:game_w_questions) { FactoryGirl.create(:game_with_questions, user: user, created_at: 1.hour.ago) }
@@ -140,7 +138,6 @@ RSpec.describe Game, type: :model do
         expect(game_w_questions).to be_finished
       end
     end
-
 
     context 'when answer is incorrect' do
       let(:wrong_answer) { %w[a b c d].reject { |i| i == game_w_questions.current_game_question.correct_answer_key}.sample }
