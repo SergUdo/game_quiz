@@ -124,11 +124,11 @@ RSpec.describe Game, type: :model do
       end
     end
 
-      it 'works correctly' do
-        expect(game_w_questions).not_to be_finished
-        expect(game_w_questions.status).to eq :in_progress
-        expect(game_w_questions.current_level).to eq 1
-      end
+    it 'works correctly' do
+      expect(game_w_questions).not_to be_finished
+      expect(game_w_questions.status).to eq :in_progress
+      expect(game_w_questions.current_level).to eq 1
+    end
 
     context 'when time is over' do
       let(:game_w_questions) { FactoryGirl.create(:game_with_questions, user: user, created_at: 1.hour.ago) }
